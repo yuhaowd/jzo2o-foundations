@@ -42,10 +42,13 @@ public class RegionController {
         return regionService.queryActiveRegionList();
     }
 
+
     @PostMapping
     @ApiOperation("区域新增")
     public void add(@RequestBody RegionUpsertReqDTO regionUpsertReqDTO) {
-        regionService.add(regionUpsertReqDTO);
+//        regionService.add(regionUpsertReqDTO);
+        regionService.addRegion(regionUpsertReqDTO);
+
     }
 
     @PutMapping("/{id}")
@@ -58,7 +61,9 @@ public class RegionController {
     public void update(@NotNull(message = "id不能为空") @PathVariable("id") Long id,
                        @RequestParam("managerName") String managerName,
                        @RequestParam("managerPhone") String managerPhone) {
-        regionService.update(id, managerName, managerPhone);
+//        regionService.update(id, managerName, managerPhone);
+
+        regionService.updateBySelf(id, managerName, managerPhone);
     }
 
     @DeleteMapping("/{id}")
@@ -73,7 +78,8 @@ public class RegionController {
     @GetMapping("/page")
     @ApiOperation("区域分页查询")
     public PageResult<RegionResDTO> page(RegionPageQueryReqDTO regionPageQueryReqDTO) {
-        return regionService.page(regionPageQueryReqDTO);
+//        return regionService.page(regionPageQueryReqDTO);
+        return regionService.pageQuery(regionPageQueryReqDTO);
     }
 
     @GetMapping("/{id}")
@@ -111,3 +117,4 @@ public class RegionController {
 //        homeService.refreshRegionRelateCaches(id);
     }
 }
+

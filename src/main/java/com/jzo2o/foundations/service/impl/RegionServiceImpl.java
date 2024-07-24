@@ -1,9 +1,11 @@
 package com.jzo2o.foundations.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.BeanUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,7 +31,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 区域管理
@@ -50,6 +54,29 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
      *
      * @param regionUpsertReqDTO 插入更新区域
      */
+//    @Override
+//    @Transactional
+//    public void add(RegionUpsertReqDTO regionUpsertReqDTO) {
+//        //1.校验城市编码是否重复
+//        LambdaQueryWrapper<Region> queryWrapper = Wrappers.<Region>lambdaQuery().eq(Region::getCityCode, regionUpsertReqDTO.getCityCode());
+//        Integer count = baseMapper.selectCount(queryWrapper);
+//        if (count > 0) {
+//            throw new ForbiddenOperationException("城市提交重复");
+//        }
+//
+//        //查询城市
+//        CityDirectory cityDirectory = cityDirectoryMapper.selectById(regionUpsertReqDTO.getCityCode());
+//        //查询城市的排序位
+//        int sotNum = cityDirectory.getSortNum();
+//
+//        //2.新增区域
+//        Region region = BeanUtil.toBean(regionUpsertReqDTO, Region.class);
+//        region.setSortNum(sotNum);
+//        baseMapper.insert(region);
+//
+//        //3.初始化区域配置
+//        configRegionService.init(region.getId(), region.getCityCode());
+//    }
     @Override
     @Transactional
     public void add(RegionUpsertReqDTO regionUpsertReqDTO) {
@@ -217,6 +244,51 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
     @Cacheable(value = RedisConstants.CacheName.JZ_CACHE, key = "'ACTIVE_REGIONS'", cacheManager = RedisConstants.CacheManager.FOREVER)
     public List<RegionSimpleResDTO> queryActiveRegionListCache() {
         return queryActiveRegionList();
+    }
+
+
+    @Override
+    public void addRegion(RegionUpsertReqDTO regionUpsertReqDTO) {
+
+        String cityCode = regionUpsertReqDTO.getCityCode();
+        // 查询 cityCode是否重复
+        int count = this.baseMapper.countRegionByCityCode(cityCode);
+        if (count > 1) {
+            throw new ForbiddenOperationException("区域重复提交");
+        }
+        // 查询排序字段
+        CityDirectory city = cityDirectoryMapper.selectById(cityCode);
+        Region region = BeanUtil.toBean(regionUpsertReqDTO, Region.class);
+        region.setSortNum(city.getSortNum());
+        // 在 insert
+        this.baseMapper.insert(region);
+
+        configRegionService.init(region.getId(), cityCode);
+    }
+
+    @Override
+    public void updateBySelf(Long id, String managerName, String managerPhone) {
+        baseMapper.updateBySelf(id, managerName, managerPhone);
+
+    }
+
+    @Override
+    public PageResult<RegionResDTO> pageQuery(RegionPageQueryReqDTO regionPageQueryReqDTO) {
+
+
+        Long pageSize = regionPageQueryReqDTO.getPageSize();
+        regionPageQueryReqDTO.setOffset((regionPageQueryReqDTO.getPageNo()-1) * pageSize);
+        long total = this.baseMapper.selectCount(new LambdaQueryWrapper<>());
+        List<Region> list = this.baseMapper.pageQuery(regionPageQueryReqDTO);
+
+        List<RegionResDTO> regionResDTOS = list.stream().map(region -> BeanUtil.toBean(region, RegionResDTO.class)).collect(Collectors.toList());
+        PageResult<RegionResDTO> regionPageResult = new PageResult<>();
+        regionPageResult.setPages((long) Math.ceil((double) total / pageSize));
+        regionPageResult.setTotal(total);
+        regionPageResult.setList(regionResDTOS);
+        return regionPageResult;
+
+
     }
 
 }
