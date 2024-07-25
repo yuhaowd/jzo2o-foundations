@@ -13,6 +13,4 @@ import lombok.Data;
 @Data
 @ApiModel("区域分页查询类")
 public class RegionPageQueryReqDTO extends PageQueryDTO {
-
-    private long offset;
 }

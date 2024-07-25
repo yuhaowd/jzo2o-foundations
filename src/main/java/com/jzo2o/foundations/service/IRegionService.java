@@ -78,15 +78,4 @@ public interface IRegionService extends IService<Region> {
      */
     List<RegionSimpleResDTO> queryActiveRegionListCache();
 
-
-    /**
-     * 添加服务区域
-     * @param regionUpsertReqDTO
-     */
-    void addRegion(RegionUpsertReqDTO regionUpsertReqDTO);
-
-    void updateBySelf(Long id, String managerName, String managerPhone);
-
-    PageResult<RegionResDTO> pageQuery(RegionPageQueryReqDTO regionPageQueryReqDTO);
-
 }
