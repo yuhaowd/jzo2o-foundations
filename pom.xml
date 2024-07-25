@@ -78,6 +78,13 @@
             <groupId>com.jzo2o</groupId>
             <artifactId>jzo2o-mysql</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-jre</version>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.jzo2o</groupId>-->
 <!--            <artifactId>jzo2o-xxl-job</artifactId>-->
