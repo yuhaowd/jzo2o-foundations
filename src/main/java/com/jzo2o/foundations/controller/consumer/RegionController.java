@@ -29,6 +29,10 @@ public class RegionController {
 
     @GetMapping("/activeRegionList")
     @ApiOperation("已开通服务区域列表")
+    // 同一个类中， 如果方法A调用方法B，并且方法B是缓存方法的话，那么缓存会失效。
+    // 解决方法：
+    // 1. 让方法A变成缓存方法，B变成普通方法
+    // 2. 方法B放在别的类中
     public List<RegionSimpleResDTO> activeRegionList() {
         return regionService.queryActiveRegionListCache();
     }
