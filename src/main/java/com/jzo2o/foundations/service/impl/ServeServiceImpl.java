@@ -19,6 +19,7 @@ import com.jzo2o.foundations.model.domain.ServeItem;
 import com.jzo2o.foundations.model.domain.ServeSync;
 import com.jzo2o.foundations.model.dto.request.ServePageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.ServeUpsertReqDTO;
+import com.jzo2o.foundations.model.dto.response.ServeCategoryResDTO;
 import com.jzo2o.foundations.model.dto.response.ServeResDTO;
 import com.jzo2o.foundations.service.IServeService;
 import com.jzo2o.mysql.utils.PageHelperUtils;
@@ -48,6 +49,9 @@ public class ServeServiceImpl extends ServiceImpl<ServeMapper, Serve> implements
 
     @Resource
     private RegionMapper regionMapper;
+
+    @Resource
+    private ServeMapper serveMapper;
 
     /**
      * 分页查询
@@ -226,6 +230,12 @@ public class ServeServiceImpl extends ServiceImpl<ServeMapper, Serve> implements
     @Cacheable(value = RedisConstants.CacheName.SERVE, key = "#id", cacheManager = RedisConstants.CacheManager.ONE_DAY)
     public Serve queryServeByIdCache(Long id) {
         return getById(id);
+    }
+
+    @Override
+    public List<ServeCategoryResDTO> serveCategory(Long regionId) {
+
+        return serveMapper.queryServeCategory(regionId);
     }
 
 }

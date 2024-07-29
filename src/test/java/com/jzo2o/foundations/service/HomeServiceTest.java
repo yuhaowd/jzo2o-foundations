@@ -27,6 +27,21 @@ import java.util.List;
 
 @SpringBootTest
 class HomeServiceTest {
+
+
+    @Resource
+    private IServeService service;
+
+
+    @Test
+    public void testServeCategory() {
+        System.out.println(service.serveCategory(1686303222843662337L));
+
+
+    }
+
+
+
 //    @Resource
 //    private HomeService homeService;
 
