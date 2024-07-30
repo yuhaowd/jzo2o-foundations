@@ -45,6 +45,33 @@
             type.sort_num,
             item.sort_num
     </select>
+    <select id="queryServeAggregationSimpleResDTOById"
+            resultMap="ServeAggregationSimpleResDTO">
+
+        select city_code,
+               item.`name`,
+               item.id,
+               unit,
+               detail_img,
+               price,
+               img,
+               serve.id serve_id
+        from serve
+                 JOIN serve_item as item on serve.serve_item_id = item.id
+        where serve.id = #{id};
+    </select>
+
+    <resultMap id="ServeAggregationSimpleResDTO" type="com.jzo2o.foundations.model.dto.response.ServeAggregationSimpleResDTO">
+        <id column="serve_id" property="id"></id>
+        <result column="city_code" property="cityCode"></result>
+        <result column="name" property="serveItemName"></result>
+        <result column="unit" property="unit"></result>
+        <result column="detail_img" property="detailImg"></result>
+        <result column="price" property="price"></result>
+        <result column="img" property="serveItemImg"></result>
+        <result column="id" property="serveItemId"></result>
+
+    </resultMap>
 
     <resultMap id="ServeCategoryMap" type="com.jzo2o.foundations.model.dto.response.ServeCategoryResDTO">
         <!--id映射主键字段-->

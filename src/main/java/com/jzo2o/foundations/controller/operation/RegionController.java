@@ -4,6 +4,7 @@ package com.jzo2o.foundations.controller.operation;
 import cn.hutool.core.bean.BeanUtil;
 import com.jzo2o.api.foundations.dto.response.RegionSimpleResDTO;
 import com.jzo2o.common.model.PageResult;
+import com.jzo2o.foundations.constants.RedisConstants;
 import com.jzo2o.foundations.model.domain.Region;
 import com.jzo2o.foundations.model.dto.request.RegionPageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.RegionUpsertReqDTO;
@@ -13,6 +14,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -104,6 +107,10 @@ public class RegionController {
         regionService.deactivate(id);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = RedisConstants.CacheName.JZ_CACHE, key = "'ACTIVE_REGIONS'"),
+            @CacheEvict(value = RedisConstants.CacheName.SERVE_ICON, key = "#id")
+    })
     @PutMapping("/refreshRegionRelateCaches/{id}")
     @ApiOperation("刷新区域相关缓存")
     public void refreshRegionRelateCaches(@PathVariable("id") Long id) {

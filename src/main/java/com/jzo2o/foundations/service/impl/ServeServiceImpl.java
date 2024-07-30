@@ -1,6 +1,7 @@
 package com.jzo2o.foundations.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -19,6 +20,7 @@ import com.jzo2o.foundations.model.domain.ServeItem;
 import com.jzo2o.foundations.model.domain.ServeSync;
 import com.jzo2o.foundations.model.dto.request.ServePageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.ServeUpsertReqDTO;
+import com.jzo2o.foundations.model.dto.response.ServeAggregationSimpleResDTO;
 import com.jzo2o.foundations.model.dto.response.ServeCategoryResDTO;
 import com.jzo2o.foundations.model.dto.response.ServeResDTO;
 import com.jzo2o.foundations.service.IServeService;
@@ -26,6 +28,7 @@ import com.jzo2o.mysql.utils.PageHelperUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -236,6 +239,18 @@ public class ServeServiceImpl extends ServiceImpl<ServeMapper, Serve> implements
     public List<ServeCategoryResDTO> serveCategory(Long regionId) {
 
         return serveMapper.queryServeCategory(regionId);
+    }
+
+    @Override
+    public List<ServeAggregationSimpleResDTO> queryHotServe(Long regionId) {
+
+        List<Serve> serves = lambdaQuery().eq(Serve::getRegionId, regionId).eq(Serve::getSaleStatus, 2).orderByDesc(Serve::getUpdateTime).list();
+
+        if (CollectionUtil.isEmpty(serves)) {
+            throw new ForbiddenOperationException("该区域暂无热门服务");
+        }
+
+        return BeanUtil.copyToList(serves, ServeAggregationSimpleResDTO.class);
     }
 
 }

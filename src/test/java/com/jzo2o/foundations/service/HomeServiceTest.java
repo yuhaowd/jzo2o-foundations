@@ -31,6 +31,8 @@ class HomeServiceTest {
 
     @Resource
     private IServeService service;
+    @Resource
+    private HomeService homeService;
 
 
     @Test
@@ -38,7 +40,19 @@ class HomeServiceTest {
         System.out.println(service.serveCategory(1686303222843662337L));
 
 
+
+
+
     }
+
+    @Test
+    public void testQueryServeTypeListByRegionIdCache() {
+
+        homeService.queryServeTypeListByRegionIdCache(1686303222843662337L);
+
+    }
+
+
 
 
 

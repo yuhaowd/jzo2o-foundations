@@ -5,6 +5,7 @@ import com.jzo2o.common.model.PageResult;
 import com.jzo2o.foundations.model.domain.Serve;
 import com.jzo2o.foundations.model.dto.request.ServePageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.ServeUpsertReqDTO;
+import com.jzo2o.foundations.model.dto.response.ServeAggregationSimpleResDTO;
 import com.jzo2o.foundations.model.dto.response.ServeCategoryResDTO;
 import com.jzo2o.foundations.model.dto.response.ServeResDTO;
 
@@ -100,4 +101,6 @@ public interface IServeService extends IService<Serve> {
     Serve queryServeByIdCache(Long id);
 
     List<ServeCategoryResDTO> serveCategory(Long regionId);
+
+    List<ServeAggregationSimpleResDTO> queryHotServe(Long regionId);
 }

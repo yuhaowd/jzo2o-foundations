@@ -6,6 +6,8 @@ import com.jzo2o.common.model.PageResult;
 import com.jzo2o.foundations.model.domain.ServeType;
 import com.jzo2o.foundations.model.dto.request.ServeTypePageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.ServeTypeUpsertReqDTO;
+import com.jzo2o.foundations.model.dto.response.ServeAggregationSimpleResDTO;
+import com.jzo2o.foundations.model.dto.response.ServeTypeListDTO;
 import com.jzo2o.foundations.model.dto.response.ServeTypeResDTO;
 
 import java.util.List;
@@ -67,4 +69,8 @@ public interface IServeTypeService extends IService<ServeType> {
      * @return 服务类型列表
      */
     List<ServeTypeSimpleResDTO> queryServeTypeListByActiveStatus(Integer activeStatus);
+
+    List<ServeTypeListDTO> queryServeTypeListByRegionId(Long regionId);
+
+    ServeAggregationSimpleResDTO queryHotServe(Long regionId);
 }

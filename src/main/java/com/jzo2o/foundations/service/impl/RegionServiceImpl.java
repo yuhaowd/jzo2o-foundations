@@ -181,8 +181,9 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
      */
     @Override
     @Caching(evict = {
-            @CacheEvict(value = RedisConstants.CacheName.JZ_CACHE, key = "'ACTIVE_REGIONS'")
-//            todo:删除首页服务列表缓存
+            @CacheEvict(value = RedisConstants.CacheName.JZ_CACHE, key = "'ACTIVE_REGIONS'"),
+            @CacheEvict(value = RedisConstants.CacheName.SERVE_ICON, key = "#regionId"),
+            @CacheEvict(value = RedisConstants.CacheName.SERVE_TYPE, key = "#regionId")
     })
     public void deactivate(Long id) {
         //区域信息
