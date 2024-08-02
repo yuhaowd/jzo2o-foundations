@@ -1,10 +1,8 @@
 package com.jzo2o.foundations.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jzo2o.foundations.model.domain.ServeType;
-import com.jzo2o.foundations.model.dto.response.ServeTypeListDTO;
-
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -15,7 +13,4 @@ import java.util.List;
  * @since 2023-07-03
  */
 public interface ServeTypeMapper extends BaseMapper<ServeType> {
-
-
-    List<ServeTypeListDTO> queryServeTypeListByRegionId(Long regionId);
 }

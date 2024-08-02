@@ -18,14 +18,6 @@ class IRegionServiceTest {
         System.out.println(regionSimpleResDTOS);
     }
 
-    @Test
-    void listSimpleCache() {
-        System.out.println(regionService.queryActiveRegionList());
-
-//        List<RegionSimpleResDTO> regionSimpleResDTOS = regionService.queryActiveRegionListCache();
-//        System.out.println(regionSimpleResDTOS);
-    }
-
 //    @Test
 //    void active() {
 //        regionService.changeActiveStatus(1686303222843662337L, 1);

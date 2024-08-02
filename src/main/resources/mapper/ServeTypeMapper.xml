@@ -2,28 +2,4 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jzo2o.foundations.mapper.ServeTypeMapper">
 
-    <select id="queryServeTypeListByRegionId"
-            resultMap="ServeTypeListDTO">
-
-        select type.id, type.img, type.sort_num, type.`name`
-        from serve
-                 join serve_item as item on serve.serve_item_id = item.id
-                 join serve_type as type on item.serve_type_id = type.id
-        where serve.region_id = #{regionId}
-        group by type.name
-        order by type.sort_num
-        limit 2;
-    </select>
-
-    <resultMap id="ServeTypeListDTO" type="com.jzo2o.foundations.model.dto.response.ServeTypeListDTO">
-        <!--id映射主键字段-->
-        <id column="id" property="serveTypeId"></id>
-        <!--result映射普通字段-->
-        <result column="name" property="serveTypeName"></result>
-        <result column="img" property="serveTypeImg"></result>
-        <result column="sort_num" property="serveTypeSortNum"></result>
-
-
-    </resultMap>
-
 </mapper>

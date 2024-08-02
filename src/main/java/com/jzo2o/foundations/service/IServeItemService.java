@@ -8,7 +8,6 @@ import com.jzo2o.common.model.PageResult;
 import com.jzo2o.foundations.model.domain.ServeItem;
 import com.jzo2o.foundations.model.dto.request.ServeItemPageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.ServeItemUpsertReqDTO;
-import com.jzo2o.foundations.model.dto.response.ServeAggregationSimpleResDTO;
 
 import java.util.List;
 
@@ -98,7 +97,4 @@ public interface IServeItemService extends IService<ServeItem> {
      * @return 服务项目录
      */
     List<ServeTypeCategoryResDTO> queryActiveServeItemCategory();
-
-    List<ServeAggregationSimpleResDTO> queryHotServeItem(List<ServeAggregationSimpleResDTO> serveAggregationSimpleResDTO);
-
 }

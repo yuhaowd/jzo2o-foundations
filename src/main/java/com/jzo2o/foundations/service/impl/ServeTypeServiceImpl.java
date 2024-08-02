@@ -18,8 +18,6 @@ import com.jzo2o.foundations.model.domain.ServeType;
 import com.jzo2o.foundations.model.dto.request.ServeSyncUpdateReqDTO;
 import com.jzo2o.foundations.model.dto.request.ServeTypePageQueryReqDTO;
 import com.jzo2o.foundations.model.dto.request.ServeTypeUpsertReqDTO;
-import com.jzo2o.foundations.model.dto.response.ServeAggregationSimpleResDTO;
-import com.jzo2o.foundations.model.dto.response.ServeTypeListDTO;
 import com.jzo2o.foundations.model.dto.response.ServeTypeResDTO;
 import com.jzo2o.foundations.service.IServeItemService;
 import com.jzo2o.foundations.service.IServeSyncService;
@@ -193,17 +191,5 @@ public class ServeTypeServiceImpl extends ServiceImpl<ServeTypeMapper, ServeType
                 .orderByDesc(ServeType::getUpdateTime);
         List<ServeType> serveTypeList = baseMapper.selectList(queryWrapper);
         return BeanUtil.copyToList(serveTypeList, ServeTypeSimpleResDTO.class);
-    }
-
-    @Override
-    public List<ServeTypeListDTO> queryServeTypeListByRegionId(Long regionId) {
-        return List.of();
-    }
-
-    @Override
-    public ServeAggregationSimpleResDTO queryHotServe(Long regionId) {
-
-
-        return null;
     }
 }
