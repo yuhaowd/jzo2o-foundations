@@ -13,8 +13,11 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @author 86188
- */
+ * 服务信息同步程序
+ *
+ * @author itcast
+ * @create 2023/8/15 18:14
+ **/
 @Component
 public class ServeCanalDataSyncHandler extends AbstractCanalRabbitMqMsgListener<ServeSync> {
 
@@ -22,7 +25,7 @@ public class ServeCanalDataSyncHandler extends AbstractCanalRabbitMqMsgListener<
     private ElasticSearchTemplate elasticSearchTemplate;
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(name = "canal-mq-jzo2o-foundations",arguments={@Argument(name="x-single-active-consumer", value = "true", type = "java.lang.Boolean") }),
+            value = @Queue(name = "canal-mq-jzo2o-foundations", arguments={@Argument(name="x-single-active-consumer", value = "true", type = "java.lang.Boolean") }),
             exchange = @Exchange(name = "exchange.canal-jzo2o", type = ExchangeTypes.TOPIC),
             key = "canal-mq-jzo2o-foundations"),
             concurrency = "1"
@@ -47,6 +50,13 @@ public class ServeCanalDataSyncHandler extends AbstractCanalRabbitMqMsgListener<
     @Override
     public void batchDelete(List<Long> ids) {
         Boolean aBoolean = elasticSearchTemplate.opsForDoc().batchDelete(IndexConstants.SERVE, ids);
-
+        if(!aBoolean){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            throw new RuntimeException("同步失败");
+        }
     }
 }

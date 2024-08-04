@@ -21,5 +21,8 @@ public class FoundationsApplication {
                 .build(args)
                 .run(args);
         log.info("家政服务-运营基础服务启动");
+
+
+        // TODO 在设置热门服务时，要清除缓存
     }
 }

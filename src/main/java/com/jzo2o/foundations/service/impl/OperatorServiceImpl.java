@@ -1,5 +1,6 @@
 package com.jzo2o.foundations.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jzo2o.common.enums.EnableStatusEnum;
 import com.jzo2o.common.expcetions.BadRequestException;
@@ -35,7 +36,9 @@ public class OperatorServiceImpl extends ServiceImpl<OperatorMapper, Operator> i
      */
     @Override
     public Operator findByUsername(String username) {
-        return lambdaQuery().eq(Operator::getUsername, username).one();
+        LambdaQueryWrapper<Operator> wrapper = new LambdaQueryWrapper<Operator>().eq(Operator::getUsername, username);
+        return this.getOne(wrapper);
+//        return lambdaQuery().eq(Operator::getUsername, username).one();
     }
 
     /**
